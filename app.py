@@ -51,10 +51,9 @@ cov = log_ret.cov().values
 st.success(f"Loaded {len(tickers)} tickers, {len(prices)} days of history.")
 
 with st.spinner("Running Monte Carlo simulation…"):
-    start = time.process_time()
-    pnl = simulate_portfolio(
-        weights, mu, cov, horizon_days=horizon, n_sims=n_sims)
-    elapsed = time.process_time() - start
+    pnl, elapsed = simulate_portfolio(
+        weights, mu, cov, horizon_days=horizon, n_sims=n_sims
+    )
 
 st.write(f"Simulation ran in {elapsed * 1000:,.2f} ms")
 

@@ -1,6 +1,9 @@
 import numpy as np
+from time import process_time
+import streamlit as st
 
 
+@st.cache_data()
 def simulate_portfolio(
     weights: np.ndarray,
     mu: np.ndarray,
@@ -8,7 +11,8 @@ def simulate_portfolio(
     horizon_days: int = 10,
     n_sims: int = 10000,
     seed: int | None = None,
-) -> np.ndarray:
+) -> (np.ndarray, float):
+    start = process_time()
     rng = np.random.default_rng(seed)
 
     chol = np.linalg.cholesky(cov)
@@ -26,7 +30,8 @@ def simulate_portfolio(
     cuml_factors = sims.prod(axis=1)
 
     pnl_array = (cuml_factors @ weights) - 1
-    return pnl_array
+    elapsed = process_time() - start
+    return pnl_array, elapsed
 
 
 def var_es(pnl_array: np.ndarray, conf: float) -> tuple[float, float]:
