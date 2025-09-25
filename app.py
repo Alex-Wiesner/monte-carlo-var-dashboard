@@ -2,9 +2,9 @@ import pandas as pd
 import time
 import streamlit as st
 import numpy as np
-from src.data_fetch import cached_fetch_price_data
-from src.plot import plot_data
-from src.engine import (
+from utils.data_fetch import cached_fetch_price_data
+from utils.plot import plot_data
+from utils.engine import (
     simulate_portfolio,
     var_es,
 )

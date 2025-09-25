@@ -1,4 +1,4 @@
-from src.engine import simulate_price_paths, portfolio_trajectory
+from utils.engine import simulate_price_paths, portfolio_trajectory
 import pandas as pd
 import altair as alt
 
