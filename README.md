@@ -2,6 +2,8 @@
 
 Fast, interactive dashboard provinding risk analytics for a custom stock basket.
 
+**Live demo:** https://monte-carlo-var-dashboard.streamlit.app/
+
 ## Installation
 
 ```bash

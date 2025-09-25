@@ -2,7 +2,7 @@ import pandas as pd
 import time
 import streamlit as st
 import numpy as np
-from src.data_fetch import fetch_price_data
+from src.data_fetch import cached_fetch_price_data
 from src.plot import plot_data
 from src.engine import (
     simulate_portfolio,
@@ -43,7 +43,7 @@ stress_shift = (
 )
 
 
-prices = fetch_price_data(tickers, start="2020-01-01")
+prices = cached_fetch_price_data(tickers, start="2020-01-01")
 log_ret = np.log(prices / prices.shift(1)).dropna()
 mu = log_ret.mean().values + stress_shift
 cov = log_ret.cov().values
@@ -52,7 +52,8 @@ st.success(f"Loaded {len(tickers)} tickers, {len(prices)} days of history.")
 
 with st.spinner("Running Monte Carlo simulation…"):
     start = time.process_time()
-    pnl = simulate_portfolio(weights, mu, cov, horizon_days=horizon, n_sims=n_sims)
+    pnl = simulate_portfolio(
+        weights, mu, cov, horizon_days=horizon, n_sims=n_sims)
     elapsed = time.process_time() - start
 
 st.write(f"Simulation ran in {elapsed * 1000:,.2f} ms")
@@ -72,4 +73,5 @@ centres = (edges[:-1] + edges[1:]) * 50
 st.bar_chart(pd.DataFrame({"Frequency": counts}, index=np.round(centres, 2)))
 
 if st.checkbox("Show sample price trajectories"):
-    st.altair_chart(plot_data(weights, mu, cov, horizon), use_container_width=True)
+    st.altair_chart(plot_data(weights, mu, cov, horizon),
+                    use_container_width=True)
